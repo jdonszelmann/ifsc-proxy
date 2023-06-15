@@ -24,14 +24,25 @@ func (*Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	_, err = w.Write(buf)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	for idx, c := range buf {
+		if c == '{' {
+			buf = buf[idx:]
+			break
+		}
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+
+	_, err = w.Write(buf)
+	if err != nil {
+		fmt.Printf("error: %s", err)
+		return
+	}
 }
 
 func main() {
