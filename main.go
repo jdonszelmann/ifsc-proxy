@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Handler struct{}
@@ -34,8 +35,14 @@ func (*Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	fmt.Printf("listening on %s\n", port)
 	server := http.Server{
-		Addr:    "localhost:8080",
+		Addr:    fmt.Sprintf("localhost:%s", port),
 		Handler: &Handler{},
 	}
 	log.Fatal(server.ListenAndServe())
