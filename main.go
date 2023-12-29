@@ -53,7 +53,7 @@ func main() {
 
 	fmt.Printf("listening on %s\n", port)
 	server := http.Server{
-		Addr:    fmt.Sprintf("localhost:%s", port),
+		Addr:    fmt.Sprintf("0.0.0.0:%s", port),
 		Handler: &Handler{},
 	}
 	log.Fatal(server.ListenAndServe())
